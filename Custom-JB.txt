@@ -1,0 +1,36 @@
+/opt/jboss/DC_Setup/configuration
+
+
+/opt/jboss/bin/domain.sh --domain-config=DC-domain.xml --host-config=DC-host-master.xml -Djboss.domain.base.dir=/opt/jboss/DC-domain/
+
+ps -ef |grep java |grep 'jboss.domain.base.dir=/opt/jboss/DC_Setup' |awk -F ' ' '{print $2" " $3 }'
+
+
+
+/opt/jboss/bin/add-user.sh -a -u admin -p redhat@1 -sc /opt/jboss/DC-domain/configuration/ -up mgmt-users.properties -gp mgmt-groups.properties 
+
+
+/opt/jboss/bin/add-user.sh -a -u admin -p redhat@1 -sc /opt/jboss/DC-domain/configuration/ -up mgmt-users.properties -gp mgmt-groups.properties 
+/opt/jboss/bin/add-user.sh -a -u ved -p redhat@1 -sc /opt/jboss/DC-domain/configuration/ -up mgmt-users.properties -gp mgmt-groups.properties 
+/opt/jboss/bin/add-user.sh -a -u surjit -p redhat@1 -sc /opt/jboss/DC-domain/configuration/ -up mgmt-users.properties -gp mgmt-groups.properties 
+/opt/jboss/bin/add-user.sh -a -u amiya -p redhat@1 -sc /opt/jboss/DC-domain/configuration/ -up mgmt-users.properties -gp mgmt-groups.properties 
+
+
+
+
+
+
+
+ <secret value="cmVkaGF0QDE=" />
+
+
+
+
+/opt/jboss/bin/domain.sh --domain-config=Node-domain.xml --host-config=Node-host-slave.xml -Djboss.domain.base.dir=/ql/jboss-eap-7.2/Node_domain
+
+/opt/jboss/bin/add-user.sh -a -u admin -p redhat@1 -sc /opt/jboss/Node_domain/configuration -up mgmt-users.properties -gp mgmt-groups.properties 
+
+
+/opt/jboss/bin/add-user.sh -a -u ved -p redhat@1 -sc /opt/jboss/Node_domain/configuration -up mgmt-users.properties -gp mgmt-groups.properties 
+/opt/jboss/bin/add-user.sh -a -u surjit -p redhat@1 -sc /opt/jboss/Node_domain/configuration -up mgmt-users.properties -gp mgmt-groups.properties 
+/opt/jboss/bin/add-user.sh -a -u amiya -p redhat@1 -sc /opt/jboss/Node_domain/configuration -up mgmt-users.properties -gp mgmt-groups.properties 

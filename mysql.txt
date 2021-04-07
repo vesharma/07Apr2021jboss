@@ -1,0 +1,127 @@
+--log-driver=fluentd --log-opt fluentd-address=mysqlserver1.local:24224 --log-opt tag="syslog"
+
+
+ docker run -itd --cpu-period=10000 --cpu-quota=50000 --cpu-rt-runtime=95000 --ulimit rtprio=99 --cap-add=sys_nice --memory="300m" --memory-swap="1g" --memory-swappiness="0" --log-driver=fluentd --log-opt fluentd-address=mysqlserver1.local:24224 --log-opt tag="syslog" --privileged=true --volume=/storage/docker/mysql-data:/root/dump --name mysqlserver1 --hostname mysqlserver1 -d -p 3306:3306 8652b9f0cb4c /bin/bash
+
+
+--log-driver json-file --log-opt max-size=10m
+
+
+docker run -itd --cpu-period=10000 --cpu-quota=50000 --cpu-rt-runtime=65000 --ulimit rtprio=99 --cap-add=sys_nice --memory="300m" --memory-swap="1g" --memory-swappiness="0" --log-driver json-file --log-opt max-size=10m  --privileged=true --volume=/storage/docker/mysql-data:/root/dump --name mysqlserver1 --hostname mysqlserver1 -d -p 3306:3306 8652b9f0cb4c /bin/bash
+
+
+
+
+docker run -itd --cpu-period=10000 --cpu-quota=50000 --cpu-shares=200 --ulimit rtprio=99 --cap-add=sys_nice --memory="300m" --memory-swap="1g" --memory-swappiness="0" --log-driver json-file --log-opt max-size=10m  --privileged=true --volume=/dockerdata:/root/dump --name mysqlserver1 --hostname mysqlserver1 -d -p 3306:3306 8652b9f0cb4c /bin/bash
+
+
+
+docker run --privileged -d -v /mnt/storage/docker/mysql-slave/files:/var/lib/mysql -v /mnt/storage/docker/mysql-slave/etc/my.cnf:/etc/my.cnf mysql/mysql-server:5.7
+
+mysqld --initialize-insecure --user=root --datadir=/var/lib/mysql/data1
+
+ /usr/sbin/mysqld --skip-grant-tables --skip-networking
+
+mysqld --initialize-insecure --user=mysql --defaults-file=/etc/my.cnf --datadir=/var/lib/mysql/data1 
+
+ mysqld --initialize-insecure --user=mysql --defaults-file=/etc/my.cnf --datadir=/var/lib/mysql/data1
+
+docker run --privileged -d -v /mnt/storage/docker/mysql-slave/files:/var/lib/mysql -v /mnt/storage/docker/mysql-slave/etc/my.cnf:/etc/my.cnf mysql/mysql-server:5.7
+
+
+docker run --name=mysql1 --privileged -d \
+--mount type=bind,src=/storage/docker/mysql-slave/etc/my.cnf,dst=/etc/my.cnf \
+--mount type=bind,src=/storage/docker/mysql-slave/files/,dst=/var/lib/mysql \
+ mysql/mysql-server:5.7:tag
+
+docker run -itd --name=mysql1 --privileged -d -v /storage/docker/mysql-slave/etc/my.cnf:/etc/my.cnf -v /storage/docker/mysql-slave/files:/var/lib/mysql mysql/mysql-server:5.7 /bin/bash
+
+
+
+VOLUME ["/etc/mysql", "/var/lib/mysql"]
+ADD dump.sql /tmp/dump.sql
+RUN /usr/bin/mysqld_safe & sleep 5s
+RUN mysql -u root -e "CREATE DATABASE mydb"
+RUN mysql -u root mydb < /tmp/dump.sql
+
+#!/bin/bash
+/usr/bin/mysqld_safe --skip-grant-tables &
+sleep 5
+mysql -u root -e "CREATE DATABASE mydb"
+mysql -u root mydb < /tmp/dump.sql
+Add these lines to your Dockerfile:
+
+ADD init_db.sh /tmp/init_db.sh
+RUN /tmp/init_db.sh
+
+
+
+docker-compose.yml
+
+data:
+  build: docker/data/.
+mysql:
+  image: mysql
+  ports:
+    - "3307:3306"
+  environment:
+    MYSQL_ROOT_PASSWORD: 1234
+  volumes:
+    - ./docker/data:/docker-entrypoint-initdb.d
+  volumes_from:
+    - data
+
+
+[mysql57-community]
+name=MySQL 5.7 Community Server
+baseurl=http://repo.mysql.com/yum/mysql-5.7-community/el/6/$basearch/
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-mysql
+
+yum repolist enabled | grep mysql
+yum module disable mysql
+ yum install mysql-community-server
+
+mysql_secure_installation
+
+ yum --disablerepo=\* --enablerepo='mysql*-community*' list available
+
+
+
+docker run --name mysql-5.7  \
+-p 3306:3306 -p 33060:33060  \
+-e MYSQL_ROOT_HOST='%' -e MYSQL_ROOT_PASSWORD='strongpassword'   \
+-d mysql/mysql-server:5.7
+
+
+
+
+
+shell> groupadd mysql
+shell> useradd -r -g mysql -s /bin/false mysql
+shell> cd /usr/local
+shell> tar zxvf /path/to/mysql-VERSION-OS.tar.gz
+shell> ln -s full-path-to-mysql-VERSION-OS mysql
+shell> cd mysql
+shell> mkdir mysql-files
+shell> chown mysql:mysql mysql-files
+shell> chmod 750 mysql-files
+shell> bin/mysqld --initialize --user=mysql
+shell> bin/mysql_ssl_rsa_setup
+shell> bin/mysqld_safe --user=mysql &
+# Next command is optional
+shell> cp support-files/mysql.server /etc/init.d/mysql.server
+
+
+
+
+GRANT type_of_permission ON database_name.table_name TO 'root'@'192.168.0.111';
+REVOKE type_of_permission ON database_name.table_name FROM 'username'@'localhost';
+SHOW GRANTS FOR 'username'@'localhost';
+DROP USER 'username'@'localhost';
+
+GRANT ALL PRIVILEGES ON * . * TO 'root'@'192.168.0.111';
+
+
+CREATE USER 'admin'@'192.168.0.111' IDENTIFIED BY 'Newbag@1';

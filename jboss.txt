@@ -1,0 +1,19 @@
+/ql/EAP-7.2.0/jbossDC/configuration
+[root@jbossdomain configuration]# ll
+total 152
+-rw-------. 1 root root    710 Jan  7  2019 application-roles.properties
+-rw-------. 1 root root    934 Jan  7  2019 application-users.properties
+-rw-rw-r--. 1 root root 116192 Jan  7  2019 DC-domain.xml
+-rw-rw-r--. 1 root root   8593 Jan  7  2019 DC-host-master.xml
+-rw-rw-r--. 1 root root   1528 Jan  7  2019 default-server-logging.properties
+-rw-rw-r--. 1 root root   2328 Jan  7  2019 logging.properties
+-rw-------. 1 root root    669 Jan  7  2019 mgmt-groups.properties
+-rw-------. 1 root root   1106 Jan  7  2019 mgmt-users.properties
+drwxr-xr-x. 2 root root     88 Mar 10 13:13 notinuse
+[root@jbossdomain configuration]#
+
+
+ ./add-user.sh -a -u admin -p redhat@1 -sc /ql/EAP-7.2.0/jbossDC/configuration -up mgmt-users.properties -gp mgmt-groups.properties -ds
+<secret value="cmVkaGF0QDE=" />
+
+/opt/jboss/bin/domain.sh -domain-config=DC-domain.xml --host-config=DC-host-master.xml  -Djboss.domain.base.dir=/ql/EAP-7.2.0/jbossDC -Djboss.domain.master.address=192.168.30.5 -Djboss.management.native.port=9999

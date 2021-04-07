@@ -1,0 +1,29 @@
+
+/opt/jboss/bin/domain.sh -domain-config=DC-domain.xml --host-config=DC-host-master.xml  -Djboss.domain.base.dir=/ql/EAP-7.2.0/jbossDC -Djboss.domain.master.address=192.168.30.25 -Djboss.management.native.port=9999
+
+
+/opt/jboss/DisputeExpert/configuration/host-slave.xml
+
+/opt/jboss/bin/domain.sh -domain-config=node-domain.xml --host-config=node-host-slave.xml  -Djboss.domain.base.dir=/opt/jboss/DisputeExpert -Djboss.domain.master.address=192.168.30.25 -Djboss.management.native.port=9999
+
+
+
+/opt/jboss/bin/add-user.sh -a -u admin -p redhat@1 -ds -sc /opt/jboss/jbossDC/configuration -up mgmt-users.properties -gp mgmt-groups.properties > secret.txt
+
+
+/opt/jboss/bin/add-user.sh -a -u admin -p redhat@1 -ds -sc /opt/jboss/DisputeExpert/configuration -up mgmt-users.properties -gp mgmt-groups.properties > secret.txt
+
+
+
+
+/opt/jboss/bin/add-user.sh -a -u admin -p redhat@1 -ds -sc /opt/jboss/DocumentStore/configuration -up mgmt-users.properties -gp mgmt-groups.properties > secret.txt
+
+/opt/jboss/bin/domain.sh -domain-config=node2-domain.xml --host-config=node2-host-slave.xml  -Djboss.domain.base.dir=/opt/jboss/DocumentStore -Djboss.domain.master.address=192.168.30.25 -Djboss.management.native.port=9999
+
+
+
+<secret value="cmVkaGF0QDE=" />
+
+
+
+

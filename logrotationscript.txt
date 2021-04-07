@@ -1,0 +1,155 @@
+joe@joe:~$ /home/joe/Server/minecraft_autobackup.sh
+[LOG] Starting Justins AutoBackup Script..
+[LOG] Working in directory: /home/joe.
+[LOG] Fetching Level Name..
+/home/joe/Server/minecraft_autobackup.… line 112: server.properties: No such file or directory
+
+The File
+
+#!/bin/bash
+#Autobackup By Justin Smith
+
+#Variables
+
+STAMP=`date +%d-%m-%Y_%H%M%S`
+
+# The screen session name, this is so the script knows where to send the save-all command (for autosave)
+SCREENNAME=”minecraft”
+
+# Backups DIR name (NOT FILE PATH)
+BACKUPDIR=”backups”
+
+# MineCraft server properties file name
+PROPFILE=”server.properties”
+
+# Enable/Disable (0/1) Automatic CronJob Manager
+CRONJOB=1
+
+# Update every ‘n’ Minutes
+UPDATEMINS=60
+
+# Delete backups older than ‘n’ Days
+OLDBACKUPS=3
+
+# Enable/Disable Logging (This will just echo each stage the script reaches, for debugging purposes)
+LOGIT=1
+
+# *————————-* SCRIPT *————————-*
+# Set todays backup dir
+
+if [ $LOGIT -eq 1 ]
+then
+echo “[LOG] Starting Justins AutoBackup Script..”
+echo “[LOG] Working in directory: $PWD.”
+fi
+
+BACKUPDATE=`date +%d-%m-%Y`
+FINALDIR=”$BACKUPDIR/$BACKUPDATE”
+
+if [ $LOGIT -eq 1 ]
+then
+echo “[LOG] Checking if backup folders exist, if not then create them.”
+fi
+
+if [ -d $BACKUPDIR ]
+then
+echo -n < /dev/null
+else
+mkdir "$BACKUPDIR"
+
+if [ $LOGIT -eq 1 ]
+then
+echo "[LOG] Created Folder: $BACKUPDIR"
+fi
+
+fi
+
+if [ -d "$FINALDIR" ]
+then
+echo -n < /dev/null
+else
+mkdir "$FINALDIR"
+
+if [ $LOGIT -eq 1 ]
+then
+echo "[LOG] Created Folder: $FINALDIR"
+fi
+
+fi
+
+if [ $OLDBACKUPS -lt 0 ]
+then
+OLDBACKUPS=3
+fi
+
+# Deletes backups that are 'n' days old
+if [ $LOGIT -eq 1 ]
+then
+echo "[LOG] Removing backups older than 3 days."
+fi
+OLDBACKUP=`find $PWD/$BACKUPDIR -type d -mtime +$OLDBACKUPS | grep -v -x "$PWD/$BACKUPDIR" | xargs rm -rf`
+
+# –Check for dependencies–
+
+#Is this system Linux?
+#LOL just kidding, at least it better be…
+
+#Get level-name
+if [ $LOGIT -eq 1 ]
+then
+echo "[LOG] Fetching Level Name.."
+fi
+
+while read line
+do
+VARI=`echo $line | cut -d= -f1`
+if [ "$VARI" == "level-name" ]
+then
+WORLD=`echo $line | cut -d= -f2`
+fi
+done < "$PROPFILE"
+
+if [ $LOGIT -eq 1 ]
+then
+echo "[LOG] Level-Name is $WORLD"
+echo ""
+fi
+
+BFILE="$WORLD.$STAMP.tar.gz"
+CMD="tar -czf $FINALDIR/$BFILE $WORLD"
+
+if [ $LOGIT -eq 1 ]
+then
+echo "[LOG] Packing and compressing folder: $WORLD to tar file: $FINALDIR/$BFILE"
+fi
+
+if [ $NOTIFY -eq 1 ]
+then
+screen -x $SCREENNAME -X stuff "`printf "say Backing up world: '$WORLD'r"`"
+fi
+
+#Create timedated backup and create the backup directory if need.
+if [ $AUTOSAVE -eq 1 ]
+then
+if [ $NOTIFY -eq 1 ]
+then
+screen -x $SCREENNAME -X stuff "`printf "say Forcing Save..r"`"
+fi
+#Send save-all to the console
+screen -x $SCREENNAME -X stuff `printf "save-allr"`
+sleep 2
+fi
+
+if [ $NOTIFY -eq 1 ]
+then
+screen -x $SCREENNAME -X stuff "`printf "say Packing and compressing world…r"`"
+fi
+
+# Run backup command
+$CMD
+
+if [ $NOTIFY -eq 1 ]
+then
+# Tell server the backup was completed.
+screen -x $SCREENNAME -X stuff "`printf "say Backup Completed.r"`"
+fi

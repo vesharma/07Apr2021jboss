@@ -1,0 +1,43 @@
+
+
+
+1. Download PCRE from PCRE.org
+
+2. Compile it with a prefix and install it:
+
+./configure --prefix=/usr/local/pcre
+make
+make install
+3. Go back to where your Apache installation is and compile Apache with PCRE:
+
+--with-pcre=/usr/local/pcre
+
+update user set authentication_string=password('Newbag@1234') where user='root';
+
+
+UPDATE mysql.user set authentication_string=PASSWORD('Newbag@1234') where user='root';
+
+
+
+flush privileges;
+create user 'admin'@'192.168.0.110' identified by 'Newbag@1234';
+create user 'admin1'@'%' identified by 'Newbag@1234';
+
+GRANT ALL PRIVILEGES ON * . * TO 'admin1'@'%';
+flush privileges;
+
+select host,user,plugin,authenticationstring,accountlocked from mysql.user where user=testuser;
+
+
+<?php
+$dbhost='localhost';
+$dbuser='testuser';
+$dbpass='password';
+$dbname='inventory';
+
+$conn = new mysqli($dbhost,$dbuser,$dbpass,$dbname);
+if($conn->connect_error) {
+    die("Error: Couldn't connect: ".$conn->connect_error);
+}
+?>
+

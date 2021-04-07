@@ -1,0 +1,19 @@
+serverHostName=192.168.30.20
+sys.languageId=en
+disableEULA=true
+
+platformAdmin.port=9191
+platformAdmin.databasePort=3377
+platformAdmin.dataDir=/opt/appdynamics/platform/mysql/data
+platformAdmin.databasePassword=redhat@1
+platformAdmin.databaseRootPassword=redhat@1
+platformAdmin.adminPassword=redhat@1
+platformAdmin.useHttps$Boolean=false
+sys.installationDir=/opt/appdynamics/platform
+
+
+./platform-setup-64bit-linux.sh -q -varfile ~/response.varfile   -c -VdisableEULA=true
+
+
+https://docs.appdynamics.com/display/PRO21/Enterprise+Console+Requirements
+https://docs.appdynamics.com/display/PRO21/Install+the+Enterprise+Console

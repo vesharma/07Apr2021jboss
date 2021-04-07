@@ -1,0 +1,73 @@
+<vault-option name="KEYSTORE_PASSWORD" value="MASK-6qcNdkIprlA"/>
+ - name: Creating jboss vault
+   shell: |
+    {{ baseDir }}/bin/vault.sh -e {{ vaultDir }} -k {{ keystoreURL }} -p {{ keystorePassword }} \
+    -s {{ keystoreSalt }} -i {{ iterationCount }} -v {{ keystoreAlias }} -b {{ vaultBlock }} \
+    -a {{ attributeName }} -x {{ attributeValue }}
+   register: vaultResult
+ - set_fact:
+    jbossKeystorePassword: "{{ item | regex_search('value=\"([^\"]+)','\\1') | first }}"
+   when: item | trim | match('.*KEYSTORE_PASSWORD.*')
+   with_items:
+     - "{{ vaultResult.stdout_lines }}"
+ - debug:
+     var: jbossKeystorePassword
+
+
+
+TASK [debug] ***********************************************************************************************************************************************************
+ok: [localhost] => {
+    "msg": {
+        "changed": true,
+        "cmd": "cat /etc/passwd | grep root ",
+        "delta": "0:00:00.005189",
+        "end": "2020-11-27 14:37:09.450157",
+        "failed": false,
+        "rc": 0,
+        "start": "2020-11-27 14:37:09.444968",
+        "stderr": "",
+        "stderr_lines": [],
+        "stdout": "root:x:0:0:root:/root:/bin/bash\noperator:x:11:0:operator:/root:/sbin/nologin",
+        "stdout_lines": [
+            "root:x:0:0:root:/root:/bin/bash",
+            "operator:x:11:0:operator:/root:/sbin/nologin"
+        ]
+    }
+}
+
+
+grep -i 'master' host.xml |awk -F'=' -F' ' '{print $3}'
+grep -i 'server name' host.xml |awk -F'=' -F' ' '{print $2 " - "$3}'
+
+ <domain-controller>
+        <local/>
+ </domain-controller>
+  inet-address
+
+
+
+[root@localhost ~]# ll /var/log/
+total 1000
+drwxr-xr-x. 2 root   root     4096 Nov 27 22:04 anaconda
+drwx------. 2 root   root      135 Nov 27 22:04 audit
+-rw-------. 1 root   root        0 Nov 27 13:41 boot.log
+-rw-------. 1 root   root    35445 Nov 27 13:41 boot.log-20201127
+-rw-------. 1 root   utmp      384 Nov 14 04:41 btmp
+drwxr-xr-x. 2 chrony chrony      6 Apr 12  2018 chrony
+-rw-------. 1 root   root     7433 Nov 27 22:01 cron
+-rw-r--r--. 1 root   root   120774 Nov 27 12:40 dmesg
+-rw-r--r--. 1 root   root   120775 Nov 26 14:00 dmesg.old
+-rw-r--r--. 1 root   root        0 Nov 14 04:41 firewalld
+-rw-r--r--. 1 root   root      193 Nov 14 04:36 grubby_prune_debug
+-rw-r--r--. 1 root   root   292000 Nov 27 22:24 lastlog
+-rw-------. 1 root   root      792 Nov 27 12:40 maillog
+-rw-------. 1 root   root   657804 Nov 27 22:24 messages
+drwxr-xr-x. 2 root   root        6 Nov 14 04:39 rhsm
+-rw-------. 1 root   root     5336 Nov 27 22:24 secure
+-rw-------. 1 root   root        0 Nov 14 04:36 spooler
+-rw-------. 1 root   root        0 Nov 14 04:36 tallylog
+drwxr-xr-x. 2 root   root      135 Nov 27 22:04 tuned
+-rw-r--r--. 1 root   root     6009 Nov 27 12:40 vmware-vgauthsvc.log.0
+-rw-r--r--. 1 root   root     7271 Nov 27 12:40 vmware-vmsvc.log
+-rw-rw-r--. 1 root   utmp    10752 Nov 27 22:24 wtmp
+-rw-------. 1 root   root     3388 Nov 26 15:02 yum.log

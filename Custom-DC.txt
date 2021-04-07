@@ -1,0 +1,50 @@
+./domain.sh --domain-config=dc_domain.xml --host-config=DC-host-master.xml -Djboss.domain.base.dir=/opt/jboss/DC-setup
+./add-user.sh -a -u admin -p redhat@1 -sc /opt/jboss/DC-setup/configuration/ -up mgmt-users.properties -gp mgmt-groups.properties -ds
+ ./add-user.sh -a -u admin -p redhat@1 -sc /ql/jboss-eap-7.2/domain_dc/configuration/ -up mgmt-users.properties -gp mgmt-groups.properties -ds
+
+./add-user.sh -a -u admin -p redhat@1 -sc /opt/jboss/Node2domain/configuration/ -up mgmt-users.properties -gp mgmt-groups.properties 
+
+EAP_HOME/bin/domain.sh -domain-config=Node2_domain.xml --host-config=Node2_host-slave.xml  -Djboss.domain.base.dir=/opt/jboss/Node2domain/configuration -Djboss.domain.master.address=192.168.0.106 -Djboss.management.native.port=9999
+
+
+[root@69_JB_node configuration]# pwd
+/ql/jboss-eap-7.2/Dc-setup/configuration
+[root@69_JB_node configuration]# ll
+total 304
+-rw-------. 1 root root    710 Jan  7  2019 application-roles.properties
+-rw-------. 1 root root    934 Jan  7  2019 application-users.properties
+-rw-rw-r--. 1 root root 116192 Jan  7  2019 dc-domain.xml
+-rw-rw-r--. 1 root root   9188 Dec 23 06:52 dc-host.xml
+-rw-rw-r--. 1 root root   1528 Jan  7  2019 default-server-logging.properties
+-rw-rw-r--. 1 root root 116192 Jan  7  2019 domain.xml
+-rw-rw-r--. 1 root root   8593 Jan  7  2019 host-master.xml
+-rw-rw-r--. 1 root root   9362 Jan  7  2019 host-slave.xml
+-rw-rw-r--. 1 root root   9171 Jan  7  2019 host.xml
+-rw-rw-r--. 1 root root   2328 Jan  7  2019 logging.properties
+-rw-------. 1 root root    669 Jan  7  2019 mgmt-groups.properties
+-rw-------. 1 root root   1106 Jan  7  2019 mgmt-users.properties
+[root@69_JB_node configuration]#
+
+
+./domain.sh --domain-config=dc_domain.xml --host-config=DC-host-master.xml -Djboss.domain.base.dir=/ql/jboss-eap-7.2/Dc-setup
+./add-user.sh -a -u admin -p redhat@1 -sc /opt/jboss/Dc-setup/configuration/ -up mgmt-users.properties -gp mgmt-groups.properties 
+
+
+<secret value="cmVkaGF0QDE=" />
+
+
+/ql/jboss-eap-7.2/Node-setup/configuration
+./domain.sh --domain-config=node-domain.xml --host-config=node-host-slave.xml -Djboss.domain.base.dir=/ql/jboss-eap-7.2/Node-setup
+./add-user.sh -a -u admin -p redhat@1 -sc /ql/jboss-eap-7.2/Node-setup/configuration/ -up mgmt-users.properties -gp mgmt-groups.properties 
+
+
+             <native-interface security-realm="ManagementRealm">
+                 <socket interface="management" port="${jboss.management.native.port:9999}"/>
+             </native-interface>
+
+
+
+
+
+
+

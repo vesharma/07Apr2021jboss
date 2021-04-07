@@ -1,0 +1,28 @@
+#!/bin/bash
+used=$(df -Ph | grep '/dev/mapper/vg_2g-lv_dbs' | awk {'print $5'})
+max=60%
+datevar=$( date +"%y-%m-%d")
+
+echo $datevar
+
+   if [ ${used%?} -ge ${max%?} ]; then
+
+      echo "The Mount Point "/DB" on $(hostname) has used $used at $(date)" | mail -s "Disk space alert on $(hostname): $used used" vedsharma2@gmail.com
+
+   else
+       DIR="/var/log"
+       if [ -d "$DIR" ]; then
+           echo " installng config files in ${DIR} .."
+           if [ ! -d "/var/log/$datevar" ]; then
+                mkdir -p "/var/log/$datevar"
+                tar -cvf "/var/log/$datevar/var_log_$datevar.tar" `find /var/log/ -name "*.log" -mtime +20`
+           fi
+       else
+          echo "error: ${DIR} not found. can not continue."
+          exit 1
+       fi
+   fi
+~
+~
+~
+~
