@@ -325,3 +325,21 @@ https://access.redhat.com/solutions/384393
                 <property name="fileName" value="${jboss.server.log.dir}/server.log"/>
             </properties>
         </custom-handler>
+        
+        
+        
+        ------------------------
+        
+        With 2 different java
+        
+        /ql/java/latest-java
+./domain.sh  -Djboss.server.base.dir=/opt/jboss-eap-7.2-1/bin --domain-config=domain.xml  --host-config=host.xml -DXms1303m -DXmx1303m -DXX:MaxPermSize=256m -Djava.net.preferIPv4Stack=true  -Djava.awt.headless=true
+
+
+/opt/jboss-eap-7.2-2/jdk1.8.0_152_2
+/opt/jboss-eap-7.2-2/bin/domain.sh  -Djboss.server.base.dir=/opt/jboss-eap-7.2-2/bin --domain-config=domain.xml  --host-config=host-slave.xml -DXms1303m -DXmx1303m -DXX:MaxPermSize=256m -Djava.net.preferIPv4Stack=true  -Djava.awt.headless=true  -Djboss.management.native.port=9999
+
+
+
+<secret value="cmVkaGF0QDE=" />
+
