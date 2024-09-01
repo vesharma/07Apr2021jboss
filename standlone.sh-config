@@ -19,3 +19,10 @@ drwxr-xr-x. 3 root root 4096 Aug 25 21:51 configuration
 drwxr-xr-x. 2 root root   53 Sep  1 16:19 log
 drwxr-xr-x. 8 root root  149 Sep  1 16:28 data
 [root@localhost instances1]#
+
+https://github.com/wildfly/wildfly-core/blob/main/core-feature-pack/common/src/main/resources/content/bin/standalone.sh
+https://docs.redhat.com/en-us/documentation/red_hat_jboss_enterprise_application_platform/7.2/pdf/configuration_guide/Red_Hat_JBoss_Enterprise_Application_Platform-7.2-Configuration_Guide-en-US.pdf
+https://octopus.com/blog/using-the-wildfly-cli
+https://docs.jboss.org/author/display/WFLY/Security%20Realms.html
+https://docs.wildfly.org/16/Admin_Guide.html
+
